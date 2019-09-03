@@ -6,6 +6,7 @@ from .serializers import SnippetSerializer, UserSerializer
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters.html import HtmlFormatter
 from pygments import highlight
+from .permissions import IsOwnerOrReadOnly
 
 
 class SnippetList(generics.ListCreateAPIView):
@@ -24,7 +25,8 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     Retrieve, update or delete a code snippet.
     """
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
     queryset = Snippet.objects.all()
     serializer_class = SnippetSerializer
 
